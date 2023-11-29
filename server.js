@@ -1,15 +1,18 @@
-const http = require('http');
+const express = require('express');
+const path = require('path');
 
-const hostname = '0.0.0.0';
+const app = express();
 const port = 8080;
 
-const server = http.createServer((req, res) => {
-  res.statusCode = 200;
-  res.setHeader('Content-Type', 'text/plain');
-  res.end('Hello, OpenShift!\n');
+// Serve static files (e.g., CSS and images) from the 'public' directory
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Define a route for the homepage
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'views', 'index.html'));
 });
 
-server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+// Start the server
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}/`);
 });
-
